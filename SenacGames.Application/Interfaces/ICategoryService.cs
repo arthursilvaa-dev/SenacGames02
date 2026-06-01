@@ -4,7 +4,10 @@ using System.Text;
 
 namespace SenacGames.Application.Interfaces
 {
-    internal class ICategoryService
+    /// <summary>
+    /// Contrato de serviço de Categorias
+    /// </summary>
+    public interface ICategoryService
     {
     }
 }
