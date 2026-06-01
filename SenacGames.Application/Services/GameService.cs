@@ -5,6 +5,7 @@ using SenacGames.Application.DTOs;
 using SenacGames.Application.Interfaces;
 using SenacGames.Domain.Entities;
 using SenacGames.Domain.Interfaces;
+using static System.Net.WebRequestMethods;
 
 namespace SenacGames.Application.Services
 {
@@ -59,8 +60,59 @@ namespace SenacGames.Application.Services
 
             //Retorna o game criado como DTO
             return MapToDto(game);
+        }
+
+        public async Task<GameDto?> UpdateAsync(int id, UpdateGameDto dto)
+        {
+            var game = await _gameRepository.GetByIdAsync(id);
+            if (game == null) return null;
+
+            game.Title = dto.Title;
+            game.Description = dto.Description;
+            game.ReleaseYear = dto.ReleaseYear;
+            game.CoverImageUrl = dto.CoverImageUrl;
+            game.CategoryId = dto.CategoryId;
+            game.IsFeatured = dto.IsFeatured;
+
+            await _gameRepository.UpdateAsync(game);
+            return MapToDto(game);
 
         }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            var game = await _gameRepository.GetByIdAsync(id);
+            if (game == null)
+            {
+                return false;
+            }
+
+            await _gameRepository.DeleteAsync(id);
+            return true;
+        }
+
+        public async Task<int> CountAsync()
+        {
+            return await _gameRepository.CountAsync();
+        }
+
+        private static GameDto MapToDto(Game game)
+        {
+            return new GameDto
+            {
+                Id = game.Id,
+                Title = game.Title,
+                Description = game.Description,
+                ReleaseYear = game.ReleaseYear,
+                CoverImageUrl = game.CoverImageUrl,
+                CategoryId = game.CategoryId,
+                CategoryName = game.Category?.Name ?? string.Empty,
+                IsFeatured = game.IsFeatured,
+                CreatedAt = game.CreatedAt
+            };
+
+        }
+
 
 
     }
