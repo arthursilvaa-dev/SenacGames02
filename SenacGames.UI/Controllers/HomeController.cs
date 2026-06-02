@@ -1,25 +1,32 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using SenacGames.Application.Interfaces;
+using SenacGames.Application.ViewModels;
 using SenacGames.UI.Models;
 
 namespace SenacGames.UI.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IGameService _gameService;
+        private readonly ICategoryService _categoryService;
+
+        // Injeção de dependência no Controller.
+        public HomeController(IGameService gameService, ICategoryService categoryService)
         {
-            return View();
+            _gameService = gameService;
+            _categoryService = categoryService;
         }
 
-        public IActionResult Privacy()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var viewModel = new HomeViewModel
+            {
+                FeaturedGames = await _gameService.GetFeaturedAsync(),
+                Categories = await _categoryService.GetAllAsync(),
+                RecentGames = await _gameService.GetAllAsync(),
+            };
+            return View(viewModel);
         }
     }
 }
