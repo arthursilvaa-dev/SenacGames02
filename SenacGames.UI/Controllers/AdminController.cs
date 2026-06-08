@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SenacGames.Application.DTOs;
 using SenacGames.Application.Interfaces;
 using SenacGames.Application.ViewModels;
 
@@ -69,6 +70,178 @@ namespace SenacGames.UI.Controllers
             };
 
             return View(viewModel);
+        }
+
+        //Processa a criação de um novo game.
+        // POST : /Admin/CreateGame
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateGame(GameFormViewModel viewModel)
+        {
+            var dto = new CreateGameDto
+            {
+                Title = viewModel.Title,
+                Description = viewModel.Description,
+                ReleaseYear = viewModel.ReleaseYear,
+                CoverImageUrl = viewModel.CoverImageUrl,
+                CategoryId = viewModel.CategoryId,
+                IsFeatured = viewModel.IsFeatured
+            };
+
+            await _gameService.CreateAsync(dto);
+            TempData["Success"] = "Game cadastrado com sucesso!";
+            return RedirectToAction(nameof(Games));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditGame(int id)
+        {
+            ViewData["ActiveMenu"] = "Games";
+            ViewData["Title"] = "Editar Game";
+
+            var game = await _gameService.GetByIdAsync(id);
+            if (game == null) return NotFound();
+
+            var categories = await _categoryService.GetAllAsync();
+            var viewModel = new GameFormViewModel
+            {
+                Id = game.Id,
+                Title = game.Title,
+                Description = game.Description,
+                ReleaseYear = game.ReleaseYear,
+                CoverImageUrl = game.CoverImageUrl,
+                CategoryId = game.CategoryId,
+                IsFeatured = game.IsFeatured,
+                Categories = categories
+            };
+
+            return View(viewModel);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditGame(int id, GameFormViewModel viewModel)
+        {
+            var dto = new UpdateGameDto
+            {
+                Title = viewModel.Title,
+                Description = viewModel.Description,
+                ReleaseYear = viewModel.ReleaseYear,
+                CoverImageUrl = viewModel.CoverImageUrl,
+                CategoryId = viewModel.CategoryId,
+                IsFeatured = viewModel.IsFeatured
+            };
+
+            var result = await _gameService.UpdateAsync(id, dto);
+
+            if(result == null)
+                return NotFound();
+
+            TempData["Success"] = "Game atualizado com sucesso!";
+            return RedirectToAction(nameof(Games));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteGame(int id)
+        {
+            ViewData["ActiveMenu"] = "Games";
+            ViewData["Title"] = "Excluir Game";
+
+            var game = await _gameService.GetByIdAsync(id);
+            if (game == null) return NotFound();
+
+            return View(game);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteGameConfirmed(int id)
+        {
+            await _gameService.DeleteAsync(id);
+            TempData["Success"] = "Game excluído com sucesso!";
+            return RedirectToAction(nameof(Games));
+        }
+
+        //==========================================
+        // CRUD DE CATEGORIAS
+        //==========================================
+
+        public async Task<IActionResult> Categories()
+        {
+            ViewData["ActiveMenu"] = "Categories";
+            ViewData["Title"] = "Gerenciar Categorias";
+            ViewData["Subtitle"] = "Cadastre, edite e exclua categorias de games";
+
+            var categories = await _categoryService.GetAllAsync();
+            return View(categories);
+        }
+
+        [HttpGet]
+        public IActionResult CreateCategory()
+        {
+            ViewData["ActiveMenu"] = "Categories";
+            ViewData["Title"] = "Nova Categoria";
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCategory(CreateCategoryDto dto)
+        {
+            await _categoryService.CreateAsync(dto);
+            TempData["Success"] = "Categoria cadastrada com sucesso!";
+            return RedirectToAction(nameof(Categories));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditCategory(int id)
+        {
+            ViewData["ActiveMenu"] = "Categories";
+            ViewData["Title"] = "Editar Categoria";
+
+            var category = await _categoryService.GetByIdAsync(id);
+            if (category == null) return NotFound();
+
+            return View(category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCategory(int id, UpdateCategoryDto dto)
+        {
+            var result = await _categoryService.UpdateAsync(id, dto);
+            if (result == null) return NotFound();
+
+            TempData["Success"] = "Categoria atualizada com sucesso!";
+            return RedirectToAction(nameof(Categories));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            ViewData["ActiveMenu"] = "Categories";
+            ViewData["Title"] = "Excluir Categoria";
+
+            var category = await _categoryService.GetByIdAsync(id);
+            if (category == null) return NotFound();
+
+            return View(category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCategoryConfirmed(int id)
+        {
+            var deleted = await _categoryService.DeleteAsync(id);
+            if(!deleted)
+            {
+                TempData["Error"] = "Não foi possível excluir a categoria. Verifique se há games associados.";
+                return RedirectToAction(nameof(Categories));
+            }
+
+            TempData["Success"] = "Categoria excluída com sucesso!";
+            return RedirectToAction(nameof(Categories));
         }
     }
 }
