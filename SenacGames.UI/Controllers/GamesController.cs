@@ -1,10 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿// =============================================================================
+// SenacGames.UI - GamesController (Área Pública)
+// =============================================================================
+// Controller para as páginas públicas de games.
+// Permite visualizar o catálogo e detalhes dos games SEM autenticação.
+// =============================================================================
+
+using Microsoft.AspNetCore.Mvc;
 using SenacGames.Application.Interfaces;
 using SenacGames.Application.ViewModels;
-using SenacGames.Domain.Entities;
 
 namespace SenacGames.UI.Controllers
 {
+    /// <summary>
+    /// Controller público de Games — catálogo e detalhes.
+    /// NÃO requer autenticação.
+    /// </summary>
     public class GamesController : Controller
     {
         private readonly IGameService _gameService;
@@ -16,6 +26,10 @@ namespace SenacGames.UI.Controllers
             _categoryService = categoryService;
         }
 
+        /// <summary>
+        /// Catálogo de games com filtro por categoria.
+        /// URL: /Games ou /Games/Index
+        /// </summary>
         public async Task<IActionResult> Index(int? categoryId)
         {
             var viewModel = new GameListViewModel
@@ -37,6 +51,10 @@ namespace SenacGames.UI.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Detalhes de um game específico.
+        /// URL: /Games/Details/5
+        /// </summary>
         public async Task<IActionResult> Details(int id)
         {
             var game = await _gameService.GetByIdAsync(id);
