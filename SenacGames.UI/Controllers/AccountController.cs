@@ -151,3 +151,45 @@ namespace SenacGames.UI.Controllers
         }
     }
 }
+
+
+
+
+
+
+//Responsabilidade das Views: Receber o modelo de dados processado pelo
+//controller e exibir a interface para o usuário. As Views são arquivos .cshtml
+
+
+//O que é o Razor e para que ele existe? 
+//Toda aplicação web precisa devolver HTML para o navegador.
+//O Razor é uma sintaxe que permite misturar código C# com HTML de forma simples e intuitiva.
+
+
+//O símbolo @ é a chave para usar o Razor. Ele indica que o que vem a seguir é código C#.
+//Exemplo: @game.Title → Exibe o título do jogo
+
+
+// A pasta Shared e os layouts: A pasta Shared contém Views que são usadas em toda
+// a aplicação, como o layout principal (Layout.cshtml) que define a estrutura
+// comum das páginas (cabeçalho, rodapé, etc). As outras Views "herdam" esse
+// layout para manter uma aparência consistente.
+
+//ViewStart e ViewImports: O arquivo _ViewStart.cshtml é executado antes de cada View
+//e define o layout padrão. O _ViewImports.cshtml é usado para importar namespaces
+//e definir diretivas comuns para todas as Views, evitando repetição de código.
+
+
+//Ordem do que acontece em cada request:
+//1. Controller executa a lógica e monta um ViewModel
+//2. _ViewStart é executado, definindo o layout 
+//3. _ViewImports é executado, importando namespaces e carregando @using e Tag helpers  
+//4. A View específica é processada
+//5. Entra no @RenderBody() do layout, onde o conteúdo da View é inserido
+//6. O HTML final é enviado para o navegador do usuário
+//7. O navegador renderiza a página para o usuário ver e interagir.
+
+
+// Tag Helpers: São componentes que facilitam a criação de elementos
+// HTML complexos, como formulários, links, etc. Exemplo:
+// <form asp-action="Login"> cria um formulário que envia para a ação Login do controller atual.

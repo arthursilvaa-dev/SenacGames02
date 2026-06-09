@@ -1,3 +1,15 @@
-﻿@using SenacGames.UI
-@using SenacGames.UI.Models
+﻿@* =============================================================================
+   SenacGames.UI - _ViewImports.cshtml
+   =============================================================================
+   📌 CONCEITO: _ViewImports.cshtml
+   Este arquivo define os imports e tag helpers que todas as Views compartilham.
+   ============================================================================= *@
+
+   @* Tag Helpers são recursos do ASP.NET Core que permitem 
+   ao código do lado do servidor participar da criação e 
+   renderização de elementos HTML em arquivos Razor *@
+
+@using SenacGames.UI
+@using SenacGames.Application.DTOs
+@using SenacGames.Application.ViewModels
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

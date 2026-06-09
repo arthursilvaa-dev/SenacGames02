@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -16,6 +16,12 @@
   <ItemGroup>
     <ProjectReference Include="..\SenacGames.Application\SenacGames.Application.csproj" />
     <ProjectReference Include="..\SenacGames.Infrastructure\SenacGames.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Games\" />
+    <Folder Include="Views\Admin\" />
+    <Folder Include="Views\Account\" />
   </ItemGroup>
 
 </Project>
