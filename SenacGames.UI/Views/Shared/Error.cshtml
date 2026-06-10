@@ -1,25 +1,23 @@
-﻿@model ErrorViewModel
-@{
-    ViewData["Title"] = "Error";
-}
+﻿@model SenacGames.UI.Models.ErrorViewModel
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<h1 class="text-danger">Erro</h1>
+<p>Ocorreu um erro no processamento da sua solicitação.</p>
 
-@if (Model.ShowRequestId)
+@if (Model?.ShowRequestId ?? false)
 {
     <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+        <strong>Request ID:</strong> @Model.RequestId
     </p>
 }
 
-<h3>Development Mode</h3>
+
+<h3>Modo de Desenvolvimento</h3>
 <p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
+    Trocar para o ambiente de <strong>Desenvolvimento</strong> exibirá informações mais detalhadas sobre o erro que ocorreu.
 </p>
 <p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
+    <strong>O ambiente de Desenvolvimento não deve ser habilitado para aplicações implantadas.</strong>
+    Isso pode resultar na exibição de informações sensíveis de exceções para usuários finais.
+    Para depuração local, habilite o ambiente de <strong>Desenvolvimento</strong> definindo a variável de ambiente <strong>ASPNETCORE_ENVIRONMENT</strong> como <strong>Desenvolvimento</strong>
+    e reiniciando o aplicativo.
 </p>

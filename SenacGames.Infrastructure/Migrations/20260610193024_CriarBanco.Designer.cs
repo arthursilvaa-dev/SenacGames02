@@ -12,8 +12,8 @@ using SenacGames.Infrastructure.Context;
 namespace SenacGames.Infrastructure.Migrations
 {
     [DbContext(typeof(SenacGamesDbContext))]
-    [Migration("20260603203532_Inicial")]
-    partial class Inicial
+    [Migration("20260610193024_CriarBanco")]
+    partial class CriarBanco
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
