@@ -18,10 +18,4 @@
     <ProjectReference Include="..\SenacGames.Infrastructure\SenacGames.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Games\" />
-    <Folder Include="Views\Admin\" />
-    <Folder Include="Views\Account\" />
-  </ItemGroup>
-
 </Project>
